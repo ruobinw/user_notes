@@ -1,0 +1,182 @@
+<?php
+
+function user_notes_permission() {
+  return array(
+    'store user notes' => array(
+      'title' => t('Store user notes'),
+      'description' => t('Notes Management'),
+    ),
+  );
+} // function user_notes_permission
+
+function user_notes_menu() {
+
+  //
+  $items['admin/config/user_notes'] = array(
+    'title' => 'User Notes',
+    'discription' =>'Store user notes',
+    'access arguments' => array('store user notes'),
+  );
+  // Admin configuration - Settings.
+  $items['admin/config/user_notes/manage'] = array(
+    'title' => 'User Notes settings',
+    'description' => 'Manage User Notes settings and configurations.',
+    'access arguments' => array('store user notes'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('user_notes_admin_settings_form'),
+  );
+  // 
+  $items['node/%node/notes'] = array(
+    'title' => 'User Notes',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 5,
+    'access callback' => 'user_access',
+    'access arguments' => array('store user notes'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('user_notes_textfield', 1),
+  );
+  //
+  $items['user/%user/notes'] = array(
+    'title' => 'All My Notes',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 5,
+    'access callback' => 'user_access',
+    'access arguments' => array('store user notes'),
+    'page callback' => 'user_notes_list',
+    'page arguments' => array(1),
+  );
+  $items['note/%/edit_note'] = array(
+  	'title' => 'Edit Note',
+  	'type' => MENU_LOCAL_TASK,
+  	'access callback' => 'user_access',
+    'access arguments' => array('store user notes'),
+  	'page callback' => 'drupal_get_form',
+  	'page arguments' => array('edit_note_form', 1),
+  );
+  $items['note/%/delete_note'] = array(
+    'title' => 'Delete Note',
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => 'user_access',
+    'access arguments' => array('store user notes'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('delete_note_form', 1),
+  );
+  return $items;
+}
+
+function user_notes_admin_settings_form($node, &$form_state) {
+
+  $form['overview'] = array(
+    '#markup' => t('This interface allows administrators to manage user notes settings'),
+    '#prefix' => '<p>',
+    '#suffix' => '</p>',
+  );
+  return $form;
+}
+
+function user_notes_textfield ($form, &$form_state, $node) {
+
+  global $user;
+  $form['notes'] = array(
+    '#title' => 'User Notes',
+    '#type' => 'textfield',
+    '#default_value' => !empty($node->title) ? $node->title : '',
+    '#required' => TRUE,
+    '#weight' => -5,
+    '#size' => 100,
+  );
+  $form['nid'] = array(
+  	'#type' => 'value', 
+  	'#value' => $node->nid,
+  );
+  $form['uid'] = array(
+  	'#type' => 'value',
+  	'#value' => $user->uid,
+  );
+  //save
+  $form['submit'] = array(
+	'#type' => 'submit',
+	'#value' => t('Save'),
+  );
+  return $form;
+}
+
+function user_notes_textfield_submit ($form, &$form_state) {	
+
+  $values = $form_state['values'];
+  db_insert('user_notes')
+  ->fields(array(
+	  'notes' => $values['notes'], 
+	  'nid' => $values['nid'],
+	  'uid' => $values['uid'])
+  )
+  ->execute();
+}
+
+function user_notes_list ($loaded_user) {
+  $output = "";
+  $note = db_query("SELECT * FROM {user_notes} WHERE uid = :uid", array(':uid' => $loaded_user->uid));
+  foreach ($note as $record) {
+	  $output .= $record->nid." <br/> ".$record->notes;
+    $output .= " <br/> ";
+    $e_url = url('note/' .$record->ntid .'/edit_note');
+    $d_url = url('note/' .$record->ntid .'/delete_note');
+    $output .= '<a href='.$e_url.'>edit</a> <a href='.$d_url.'>delete</a>';
+    $output .= " <br/> ";
+  }
+  return $output;
+}
+
+function edit_note_form ($form, &$form_state, $loaded_ntid) {
+  $notes = db_query('SELECT n.notes FROM {user_notes} n WHERE n.ntid = :ntid', array(':ntid' => $loaded_ntid))->fetchField();
+  $form['notes'] = array(
+    '#title' => 'Edit the note',
+    '#type' => 'textfield',
+    '#default_value' => $notes,
+    '#required' => TRUE,
+    '#size' => 100,
+  );
+  $form['loaded_ntid'] = array(
+    '#type' => 'value',
+    '#value' => $loaded_ntid,
+  );
+  $form['submit'] = array(
+	  '#type' => 'submit',
+	  '#value' => t('Submit'),
+  );
+  return $form;
+}
+
+function edit_note_form_submit ($form, &$form_state) {	
+  $values = $form_state['values'];
+  db_update('user_notes')
+  ->fields(array('notes' => $values['notes'],))
+  ->condition('ntid', $values['loaded_ntid'], '=')
+  ->execute();
+  drupal_set_message(t('The change has been saved successfully!'));
+}
+
+function delete_note_form ($form, &$form_state, $loaded_ntid) {
+  $notes = db_query('SELECT n.notes FROM {user_notes} n WHERE n.ntid = :ntid', array(':ntid' => $loaded_ntid))->fetchField();
+  $form['notes'] = array(
+    '#markup' => 'Are you sure you want to delete the note?</br></br>' .$notes .'</br></br>',
+    '#size' => 100,
+  );
+  $form['loaded_ntid'] = array(
+    '#type' => 'value',
+    '#value' => $loaded_ntid,
+  );
+  $form['delete'] = array(
+    '#type' => 'submit',
+    '#value' => t('Delete'),
+  );
+  return $form;
+}
+
+function delete_note_form_submit ($form, &$form_state) {  
+  $values = $form_state['values'];
+  $num_deleted = db_delete('user_notes')
+  ->condition('ntid', $values['loaded_ntid'])
+  ->execute();
+  drupal_set_message(t('The note has been deleted successfully!'));
+}

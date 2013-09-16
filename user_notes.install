@@ -1,0 +1,36 @@
+<?php
+
+function user_notes_schema() {
+	$schema['user_notes'] = array(
+		'fields' => array(
+        	'ntid' => array(
+                'description' => 'The primary identifier for a note.',
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+            ),
+            'nid' => array(
+        		'description' => 'The primary identifier for a node.',
+  			    'type' => 'int',
+				'unsigned' => TRUE,
+        		'not null' => TRUE,
+        	),
+        	'uid' => array(
+                'description' => 'The primary identifier for a user.',
+                'type' => 'varchar',
+                'length' => 1000,
+                'not null' => TRUE,
+                'default' => '',
+            ),
+            'notes' => array(
+        		'description' => 'The content of the user notes.',
+        		'type' => 'varchar',
+        		'length' => 1000,
+        		'not null' => TRUE,
+        		'default' => '',
+        	),
+      	),
+		'primary key' => array('ntid'),
+	);
+	return $schema;
+}
