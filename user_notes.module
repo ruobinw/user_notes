@@ -10,7 +10,6 @@ function user_notes_permission() {
 } // function user_notes_permission
 
 function user_notes_menu() {
-
   //
   $items['admin/config/user_notes'] = array(
     'title' => 'User Notes',
@@ -65,7 +64,6 @@ function user_notes_menu() {
 }
 
 function user_notes_admin_settings_form($node, &$form_state) {
-
   $form['overview'] = array(
     '#markup' => t('This interface allows administrators to manage user notes settings'),
     '#prefix' => '<p>',
@@ -75,7 +73,6 @@ function user_notes_admin_settings_form($node, &$form_state) {
 }
 
 function user_notes_textfield ($form, &$form_state, $node) {
-
   global $user;
   $form['notes'] = array(
     '#title' => 'User Notes',
@@ -102,7 +99,6 @@ function user_notes_textfield ($form, &$form_state, $node) {
 }
 
 function user_notes_textfield_submit ($form, &$form_state) {	
-
   $values = $form_state['values'];
   db_insert('user_notes')
   ->fields(array(

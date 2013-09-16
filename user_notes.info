@@ -1,5 +1,5 @@
 name = User notes 
-description = A user note manager.
-files[] = user-notes.module
+description = A user notes manager.
 core = 7.x
 version = 7.x-0.1-dev
+files[] = user-notes.module
