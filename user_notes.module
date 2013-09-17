@@ -10,7 +10,7 @@ function user_notes_permission() {
 } // function user_notes_permission
 
 function user_notes_menu() {
-  //
+  // Set up the admin page
   $items['admin/config/user_notes'] = array(
     'title' => 'User Notes',
     'discription' =>'Store user notes',
