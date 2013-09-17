@@ -77,7 +77,7 @@ function user_notes_textfield ($form, &$form_state, $node) {
   $form['notes'] = array(
     '#title' => 'User Notes',
     '#type' => 'textfield',
-    '#default_value' => !empty($node->title) ? $node->title : '',
+    '#default_value' => '',
     '#required' => TRUE,
     '#weight' => -5,
     '#size' => 100,
