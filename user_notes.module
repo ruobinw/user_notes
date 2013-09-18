@@ -10,13 +10,13 @@ function user_notes_permission() {
 } // function user_notes_permission
 
 function user_notes_menu() {
-  // Set up the admin page (incomplete)
+  // Set up the admin page. (incomplete)
   $items['admin/config/user_notes'] = array(
     'title' => 'User Notes',
     'discription' =>'Store user notes',
     'access arguments' => array('store user notes'),
   );
-  // Admin configuration - Settings (incomplete)
+  // Admin configuration - Settings. (incomplete)
   $items['admin/config/user_notes/manage'] = array(
     'title' => 'User Notes settings',
     'description' => 'Manage User Notes settings and configurations.',
