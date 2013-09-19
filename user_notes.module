@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * The module enables users to add a note to a spercific article
+ */
+
 function user_notes_permission() {
   return array(
     'store user notes' => array(
@@ -13,7 +18,7 @@ function user_notes_menu() {
   // Set up the admin page. (incomplete)
   $items['admin/config/user_notes'] = array(
     'title' => 'User Notes',
-    'discription' =>'Store user notes',
+    'discription' => 'Store user notes',
     'access arguments' => array('store user notes'),
   );
   // Admin configuration - Settings. (incomplete)
@@ -45,12 +50,12 @@ function user_notes_menu() {
     'page arguments' => array(1),
   );
   $items['note/%/edit_note'] = array(
-  	'title' => 'Edit Note',
-  	'type' => MENU_LOCAL_TASK,
-  	'access callback' => 'user_access',
+    'title' => 'Edit Note',
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => 'user_access',
     'access arguments' => array('store user notes'),
-  	'page callback' => 'drupal_get_form',
-  	'page arguments' => array('edit_note_form', 1),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('edit_note_form', 1),
   );
   $items['note/%/delete_note'] = array(
     'title' => 'Delete Note',
@@ -72,7 +77,7 @@ function user_notes_admin_settings_form($node, &$form_state) {
   return $form;
 }
 
-function user_notes_textfield ($form, &$form_state, $node) {
+function user_notes_textfield($form, &$form_state, $node) {
   global $user;
   $form['notes'] = array(
     '#title' => 'User Notes',
@@ -83,47 +88,47 @@ function user_notes_textfield ($form, &$form_state, $node) {
     '#size' => 100,
   );
   $form['nid'] = array(
-  	'#type' => 'value',
-  	'#value' => $node->nid,
+    '#type' => 'value',
+    '#value' => $node->nid,
   );
   $form['uid'] = array(
-  	'#type' => 'value',
-  	'#value' => $user->uid,
+    '#type' => 'value',
+    '#value' => $user->uid,
   );
   //save
   $form['submit'] = array(
-	'#type' => 'submit',
-	'#value' => t('Save'),
+    '#type' => 'submit',
+    '#value' => t('Save'),
   );
   return $form;
 }
 
-function user_notes_textfield_submit ($form, &$form_state) {
+function user_notes_textfield_submit($form, &$form_state) {
   $values = $form_state['values'];
   db_insert('user_notes')
   ->fields(array(
-	  'notes' => $values['notes'],
-	  'nid' => $values['nid'],
-	  'uid' => $values['uid'])
+    'notes' => $values['notes'],
+    'nid' => $values['nid'],
+    'uid' => $values['uid'])
   )
   ->execute();
 }
 
-function user_notes_list ($loaded_user) {
+function user_notes_list($loaded_user) {
   $output = "";
   $note = db_query("SELECT * FROM {user_notes} WHERE uid = :uid", array(':uid' => $loaded_user->uid));
   foreach ($note as $record) {
-	  $output .= $record->nid." <br/> ".$record->notes;
+    $output .= $record->nid . " <br/> " . $record->notes;
     $output .= " <br/> ";
-    $e_url = url('note/' .$record->ntid .'/edit_note');
-    $d_url = url('note/' .$record->ntid .'/delete_note');
-    $output .= '<a href='.$e_url.'>edit</a> <a href='.$d_url.'>delete</a>';
+    $e_url = url('note/' . $record->ntid . '/edit_note');
+    $d_url = url('note/' . $record->ntid . '/delete_note');
+    $output .= '<a href=' . $e_url . '>edit</a> <a href=' . $d_url . '>delete</a>';
     $output .= " <br/> ";
   }
   return $output;
 }
 
-function edit_note_form ($form, &$form_state, $loaded_ntid) {
+function edit_note_form($form, &$form_state, $loaded_ntid) {
   $notes = db_query('SELECT n.notes FROM {user_notes} n WHERE n.ntid = :ntid', array(':ntid' => $loaded_ntid))->fetchField();
   $form['notes'] = array(
     '#title' => 'Edit the note',
@@ -137,25 +142,25 @@ function edit_note_form ($form, &$form_state, $loaded_ntid) {
     '#value' => $loaded_ntid,
   );
   $form['submit'] = array(
-	  '#type' => 'submit',
-	  '#value' => t('Submit'),
+    '#type' => 'submit',
+    '#value' => t('Submit'),
   );
   return $form;
 }
 
-function edit_note_form_submit ($form, &$form_state) {	
+function edit_note_form_submit($form, &$form_state) {	
   $values = $form_state['values'];
   db_update('user_notes')
-  ->fields(array('notes' => $values['notes'],))
+  ->fields(array('notes' => $values['notes'], ))
   ->condition('ntid', $values['loaded_ntid'], '=')
   ->execute();
   drupal_set_message(t('The change has been saved successfully!'));
-}
+} 
 
-function delete_note_form ($form, &$form_state, $loaded_ntid) {
+function delete_note_form($form, &$form_state, $loaded_ntid) {
   $notes = db_query('SELECT n.notes FROM {user_notes} n WHERE n.ntid = :ntid', array(':ntid' => $loaded_ntid))->fetchField();
   $form['notes'] = array(
-    '#markup' => 'Are you sure you want to delete the note?</br></br>' .$notes .'</br></br>',
+    '#markup' => 'Are you sure you want to delete the note?</br></br>' . $notes . '</br></br>',
     '#size' => 100,
   );
   $form['loaded_ntid'] = array(
@@ -169,7 +174,7 @@ function delete_note_form ($form, &$form_state, $loaded_ntid) {
   return $form;
 }
 
-function delete_note_form_submit ($form, &$form_state) {
+function delete_note_form_submit($form, &$form_state) {
   $values = $form_state['values'];
   $num_deleted = db_delete('user_notes')
   ->condition('ntid', $values['loaded_ntid'])
