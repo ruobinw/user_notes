@@ -128,7 +128,7 @@ function user_notes_list($loaded_user) {
     $output .= theme('user_notes_diff_list', $theme_args);
   }
   pager_default_initialize($total = $note->rowCount(), $limit = 10, $element = 0);
-  $output .= theme('pager', array('quantity' => $total, 'limit' => $limit, ));
+  $output .= theme('pager');
   return $output;
 }
 
