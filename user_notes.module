@@ -117,6 +117,7 @@ function user_notes_textfield_submit($form, &$form_state) {
 function user_notes_list($loaded_user) {
   $output = "";
   $note = db_query("SELECT * FROM {user_notes} WHERE uid = :uid", array(':uid' => $loaded_user->uid));
+  pager_default_initialize($total = 12, $limit = 10, $element = 0);
   foreach ($note as $record) {
     $output .= $record->nid . " <br/> " . $record->notes;
     $output .= " <br/> ";
@@ -127,6 +128,7 @@ function user_notes_list($loaded_user) {
     $theme_args = array('nid' => $record->nid, 'note' => $record->notes, 'ntid' => $record->ntid);
     $output .= theme('user_notes_diff_list', $theme_args);
   }
+  $output .= theme('pager', array('quantity' => $total));
   return $output;
 }
 
