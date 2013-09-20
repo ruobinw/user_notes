@@ -124,6 +124,8 @@ function user_notes_list($loaded_user) {
     $d_url = url('note/' . $record->ntid . '/delete_note');
     $output .= '<a href=' . $e_url . '>edit</a> <a href=' . $d_url . '>delete</a>';
     $output .= " <br/> ";
+    $theme_args = array('nid' => $record->nid, 'note' => $record->notes, 'ntid' => $record->ntid);
+    $output .= theme('user_notes_diff_list', $theme_args);
   }
   return $output;
 }
@@ -180,4 +182,25 @@ function delete_note_form_submit($form, &$form_state) {
   ->condition('ntid', $values['loaded_ntid'])
   ->execute();
   drupal_set_message(t('The note has been deleted successfully!'));
+}
+
+/**
+* Implements hook_theme().
+*/
+
+function user_notes_theme() {
+  return array(
+    // The array key is the name of the theme hook.
+    'user_notes_diff_list' => array(
+      // Use a template and give the template's name.
+      'template' => 'user-notes-diff-list',
+      // Specify the default variable names and their values.
+      'variables' => array(
+        'nid' => NULL, 'notes' => NULL, 'ntid' => NULL,
+      ),
+      // Add a partial pattern to help hook theme suggestion
+      // matches.
+      'pattern' => 'user_notes_diff_list__',
+    ),
+  );
 }
