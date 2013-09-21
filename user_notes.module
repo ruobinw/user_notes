@@ -206,3 +206,44 @@ function user_notes_theme() {
     ),
   );
 }
+
+/**
+ * Implements hook_block_info().
+ */
+function user_notes_block_info() {
+  $blocks = array();
+  $blocks['my_block'] = array(
+    'info' => t('5 Most Recent Notes'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function user_notes_block_view($delta='') {
+  $block = array();
+ 
+  switch($delta) {
+    case 'my_block' :
+      $block['content'] = my_block_view();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function my_block_view() {
+  $block = array();
+  $results = db_query_range('SELECT n.nid, n.notes FROM {user_notes} n', 0, 5, array(), array());
+  while($row = mysqli_fetch_array($results)) {
+    $block[][0] = $row['nid'];
+    $block[][1] = $row['notes'];
+  }
+  return $block;
+}
