@@ -3,6 +3,14 @@ description = A user notes manager.
 core = 7.x
 version = 7.x-0.1-dev
 files[] = user_notes.module
+files[] = user_notes.features.field_base.inc
+files[] = user_notes.features.field_instance.inc
+files[] = user_notes.features.taxonomy.inc
+files[] = user_notes.features.user_permission.inc
+files[] = user_notes.views_default.inc
+files[] = user_notes.features.fe_block_settings.inc
+files[] = user_notes.features.inc
+files[] = node.pages.inc
 
 dependencies[] = blog
 dependencies[] = comment
