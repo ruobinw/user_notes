@@ -1,7 +1,5 @@
 <?php
 
-include_once('demonstration_feature.features.inc');
-
 /**
  * @file
  * The module enables users to add a note to a spercific article
