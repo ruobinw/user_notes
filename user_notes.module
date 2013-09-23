@@ -220,10 +220,6 @@ function user_notes_theme() {
       // matches.
       'pattern' => 'user_notes_diff_list__',
     ),
-    // 'user_notes_recent_notes_block' => array(
-    //   'variables' => array(
-    //     'nid' => NULL, 'notes' => NULL,),
-    // ),
   );
 }
 
