@@ -5,6 +5,8 @@
  * The module enables users to add a note to a spercific article
  */
 
+include_once 'user_notes.features.inc';
+
 function user_notes_permission() {
   return array(
     'store user notes' => array(
