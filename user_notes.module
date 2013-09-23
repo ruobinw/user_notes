@@ -133,6 +133,7 @@ function user_notes_list($loaded_user) {
   ->condition('n.uid', $loaded_user->uid, '=')
   ->extend('PagerDefault')
   ->execute();
+
   foreach ($note as $record) {
     $output .= $record->nid . " <br/> " . $record->notes;
     $output .= " <br/> ";
@@ -219,6 +220,10 @@ function user_notes_theme() {
       // matches.
       'pattern' => 'user_notes_diff_list__',
     ),
+    'user_notes_recent_notes_block' => array(
+
+
+    ),
   );
 }
 
@@ -255,10 +260,18 @@ function user_notes_block_view($delta='') {
  */
 function my_block_view() {
   $block = array();
-  $results = db_query_range('SELECT n.nid, n.notes FROM {user_notes} n', 0, 5, array(), array());
-  while($row = mysqli_fetch_array($results)) {
-    $block[][0] = $row['nid'];
-    $block[][1] = $row['notes'];
+  $results = db_query_range('SELECT n.nid, n.notes FROM {user_notes} n', 0, 5);
+  
+  if ($results) {
+    while($row = $results->fetchAssoc()) {
+      $block[][0] = $row['nid'];
+      $block[][1] = $row['notes'];
+    }
   }
-  return $block;
+  $block = 'hello world';
+  return theme('recent_notes_block', $block);
+}
+
+function theme_recent_notes_block($variables) {
+
 }
