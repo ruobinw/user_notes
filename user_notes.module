@@ -220,10 +220,10 @@ function user_notes_theme() {
       // matches.
       'pattern' => 'user_notes_diff_list__',
     ),
-    'user_notes_recent_notes_block' => array(
-
-
-    ),
+    // 'user_notes_recent_notes_block' => array(
+    //   'variables' => array(
+    //     'nid' => NULL, 'notes' => NULL,),
+    // ),
   );
 }
 
@@ -260,18 +260,12 @@ function user_notes_block_view($delta='') {
  */
 function my_block_view() {
   $block = array();
-  $results = db_query_range('SELECT n.nid, n.notes FROM {user_notes} n', 0, 5);
+  $results = db_query_range('SELECT n.notes FROM {user_notes} n', 0, 5);
   
   if ($results) {
-    while($row = $results->fetchAssoc()) {
-      $block[][0] = $row['nid'];
-      $block[][1] = $row['notes'];
+    while($row = $results->fetchField()) {
+      $block['items'][] = $row;
     }
   }
-  $block = 'hello world';
-  return theme('recent_notes_block', $block);
-}
-
-function theme_recent_notes_block($variables) {
-
+  return theme('item_list', $block);
 }
