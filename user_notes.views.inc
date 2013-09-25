@@ -41,8 +41,8 @@ function user_notes_views_data() {
     // 'left_field' is the primary key in the referenced table.
     // 'field' is the foreign key in this table.
     'node' => array(
-      'left_field' => 'ntid',
-      //'field' => 'nid',
+      'left_field' => 'nid',
+      'field' => 'nid',
     ),
   );
 
@@ -66,20 +66,6 @@ function user_notes_views_data() {
   $data['user_notes']['ntid'] = array(
     'title' => t('Note ID'),
     'help' => t('Primary keys that references a note.'),
-    
-    // Define a relationship to the {node} table, so user_notes views can
-    // add a relationship to nodes. If you want to define a relationship the
-    // other direction, use hook_views_data_alter(), or use the 'implicit' join
-    // method described above.
-    'relationship' => array(
-      'base' => 'user_notes', // The name of the table to join with.
-      'base field' => 'ntid', // The name of the field on the joined table.
-      // 'field' => 'ntid' -- see hook_views_data_alter(); not needed here.
-      'handler' => 'views_handler_relationship',
-      'label' => t('Default label for the relationship'),
-      'title' => t('user notes'),
-      'help' => t('More information on this relationship'),
-    ),
   );
 
   // Note text field.
@@ -115,12 +101,25 @@ function user_notes_views_data() {
     'sort' => array(
       'handler' => 'views_handler_sort',
     ),
+    // Define a relationship to the {node} table, so user_notes views can
+    // add a relationship to nodes. If you want to define a relationship the
+    // other direction, use hook_views_data_alter(), or use the 'implicit' join
+    // method described above.
+    'relationship' => array(
+      'base' => 'node', // The name of the table to join with.
+      'base field' => 'nid', // The name of the field on the joined table.
+      // 'field' => 'ntid' -- see hook_views_data_alter(); not needed here.
+      'handler' => 'views_handler_relationship',
+      'label' => t('Default label for the relationship'),
+      'title' => t('Node'),
+      'help' => t('Node table.'),
+    ),
   );
   
   //User ID text field.
-  $data['user_notes']['nid'] = array(
-    'title' => t('Node ID'),
-    'help' => t('Node ID that references to a node'),
+  $data['user_notes']['uid'] = array(
+    'title' => t('User ID'),
+    'help' => t('User ID that references to a user'),
     'field' => array(
       'handler' => 'views_handler_field_numeric',
       'click sortable' => TRUE,
@@ -132,8 +131,6 @@ function user_notes_views_data() {
       'handler' => 'views_handler_sort',
     ),
   );
-
-
 
   // // Example boolean field.
   // $data['user_notes']['boolean_field'] = array(
@@ -160,21 +157,37 @@ function user_notes_views_data() {
   //   ),
   // );
 
-  // // Example timestamp field.
-  // $data['user_notes']['timestamp_field'] = array(
-  //   'title' => t('Timestamp field'),
-  //   'help' => t('Just a timestamp field.'),
-  //   'field' => array(
-  //     'handler' => 'views_handler_field_date',
-  //     'click sortable' => TRUE,
-  //   ),
-  //   'sort' => array(
-  //     'handler' => 'views_handler_sort_date',
-  //   ),
-  //   'filter' => array(
-  //     'handler' => 'views_handler_filter_date',
-  //   ),
-  // );
-
+  // User notes timestamp field.
+  $data['user_notes']['created'] = array(
+    'title' => t('Created'),
+    'help' => t('Date and time the note was created.'),
+    'field' => array(
+      'handler' => 'views_handler_field_date',
+      'click sortable' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort_date',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_date',
+    ),
+  );
+  
+  // User notes timestamp field.
+  $data['user_notes']['changed'] = array(
+    'title' => t('Changed'),
+    'help' => t('Date and time the note was last changed.'),
+    'field' => array(
+      'handler' => 'views_handler_field_date',
+      'click sortable' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort_date',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_date',
+    ),
+  );
+  
   return $data;
 }

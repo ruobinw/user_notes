@@ -34,6 +34,18 @@ function user_notes_schema() {
         'not null' => TRUE,
         'default' => '',
       ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the note was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when the note was most recently saved.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
     ),
     'primary key' => array('ntid'),
   );

@@ -107,11 +107,13 @@ function user_notes_textfield($form, &$form_state, $node) {
 
 function user_notes_textfield_submit($form, &$form_state) {
   $values = $form_state['values'];
+  $timestamp = REQUEST_TIME;
   db_insert('user_notes')
   ->fields(array(
     'notes' => $values['notes'],
     'nid' => $values['nid'],
-    'uid' => $values['uid'])
+    'uid' => $values['uid'],
+    'created' => $timestamp,)
   )
   ->execute();
 }
@@ -172,8 +174,12 @@ function edit_note_form($form, &$form_state, $loaded_ntid) {
 
 function edit_note_form_submit($form, &$form_state) {	
   $values = $form_state['values'];
+  $timestamp = REQUEST_TIME;
   db_update('user_notes')
-  ->fields(array('notes' => $values['notes'], ))
+  ->fields(array(
+    'notes' => $values['notes'], 
+    'changed' => $timestamp)
+  )
   ->condition('ntid', $values['loaded_ntid'], '=')
   ->execute();
   drupal_set_message(t('The change has been saved successfully!'));

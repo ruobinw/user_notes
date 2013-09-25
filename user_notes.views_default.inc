@@ -115,5 +115,75 @@ function user_notes_views_default_views() {
   );
   $export['number_kingdom'] = $view;
 
+  //user notes view
+  $view = new view();
+  $view->name = 'user_notes';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'user_notes';
+  $view->human_name = 'User notes';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'user notes';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
+  /* Relationship: Node */
+  $handler->display->display_options['relationships']['nid']['id'] = 'nid';
+  $handler->display->display_options['relationships']['nid']['table'] = 'node';
+  $handler->display->display_options['relationships']['nid']['field'] = 'title';
+  $handler->display->display_options['relationships']['nid']['label'] = 'node title';
+  $handler->display->display_options['relationships']['nid']['required'] = TRUE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['relationship'] = 'nid';
+  /* Field: User notes: Node ID */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'user_notes';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  /* Field: User notes: Note */
+  $handler->display->display_options['fields']['notes']['id'] = 'notes';
+  $handler->display->display_options['fields']['notes']['table'] = 'user_notes';
+  $handler->display->display_options['fields']['notes']['field'] = 'notes';
+  /* Sort criterion: Note: Created date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'user_notes';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  // $handler->display->display_options['filters']['status']['id'] = 'status';
+  // $handler->display->display_options['filters']['status']['table'] = 'node';
+  // $handler->display->display_options['filters']['status']['field'] = 'status';
+  // $handler->display->display_options['filters']['status']['value'] = 1;
+  // $handler->display->display_options['filters']['status']['group'] = 1;
+  // $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['path'] = 'user-notes';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'user notes';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $export['user_notes'] = $view;
+  
   return $export;
 }
