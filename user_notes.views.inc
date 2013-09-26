@@ -1,18 +1,6 @@
 <?php
 
 function user_notes_views_data() {
-  // This example describes how to write hook_views_data() for the following
-  // table:
-  //
-  // CREATE TABLE user_notes (
-  //   ntid INT(11) NOT NULL         COMMENT 'Primary key; refers to {node}.nid.',
-  //   plain_text_field VARCHAR(32) COMMENT 'Just a plain text field.',
-  //   numeric_field INT(11)        COMMENT 'Just a numeric field.',
-  //   boolean_field INT(1)         COMMENT 'Just an on/off field.',
-  //   timestamp_field INT(8)       COMMENT 'Just a timestamp field.',
-  //   PRIMARY KEY(nid)
-  // );
-
   // First, the entry $data['user_notes']['table'] describes properties of
   // the actual table – not its content.
 
@@ -20,7 +8,7 @@ function user_notes_views_data() {
   // table's fields, sort criteria, etc. so it's easy to tell where they came
   // from.
   $data['user_notes']['table']['group'] = t('User notes');
-
+  
   // Define this as a base table – a table that can be described in itself by
   // views (and not just being brought in as a relationship). In reality this
   // is not very useful for this table, as it isn't really a distinct object of
@@ -132,31 +120,6 @@ function user_notes_views_data() {
     ),
   );
 
-  // // Example boolean field.
-  // $data['user_notes']['boolean_field'] = array(
-  //   'title' => t('Boolean field'),
-  //   'help' => t('Just an on/off field.'),
-  //   'field' => array(
-  //     'handler' => 'views_handler_field_boolean',
-  //     'click sortable' => TRUE,
-  //   ),
-  //   'filter' => array(
-  //     'handler' => 'views_handler_filter_boolean_operator',
-      
-  //     // Note that you can override the field-wide label:
-  //     'label' => t('Published'),
-      
-  //     // This setting is used by the boolean filter handler, as possible option.
-  //     'type' => 'yes-no',
-      
-  //     // use boolean_field = 1 instead of boolean_field <> 0 in WHERE statment.
-  //     'use equal' => TRUE,
-  //   ),
-  //   'sort' => array(
-  //     'handler' => 'views_handler_sort',
-  //   ),
-  // );
-
   // User notes timestamp field.
   $data['user_notes']['created'] = array(
     'title' => t('Created'),
@@ -188,6 +151,25 @@ function user_notes_views_data() {
       'handler' => 'views_handler_filter_date',
     ),
   );
+
+  // $data['views_entity_user_notes']['table']['group'] = t('Content');
+  //$data['user_notes']['edit_note']['moved to'] = array('views_entity_user_notes', 'edit_note');
+  $data['user_notes']['edit_note'] = array(
+    'field' => array(
+      'title' => t('Edit'),
+      'help' => t('Provide a simple link to edit the content.'),
+      'handler' => 'views_handler_field_node_link_edit',
+    ),
+  );
+
+  // $data['node']['delete_node']['moved to'] = array('views_entity_node', 'delete_node');
+  // $data['views_entity_node']['delete_node'] = array(
+  //   'field' => array(
+  //     'title' => t('Delete link'),
+  //     'help' => t('Provide a simple link to delete the content.'),
+  //     'handler' => 'views_handler_field_node_link_delete',
+  //   ),
+  // );
   
   return $data;
 }

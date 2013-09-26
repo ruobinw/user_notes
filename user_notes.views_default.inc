@@ -161,19 +161,22 @@ function user_notes_views_default_views() {
   $handler->display->display_options['fields']['notes']['id'] = 'notes';
   $handler->display->display_options['fields']['notes']['table'] = 'user_notes';
   $handler->display->display_options['fields']['notes']['field'] = 'notes';
-  /* Sort criterion: Note: Created date */
+  /* Sort criterion: User notes: Created date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'user_notes';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Content: Published */
-  // $handler->display->display_options['filters']['status']['id'] = 'status';
-  // $handler->display->display_options['filters']['status']['table'] = 'node';
-  // $handler->display->display_options['filters']['status']['field'] = 'status';
-  // $handler->display->display_options['filters']['status']['value'] = 1;
-  // $handler->display->display_options['filters']['status']['group'] = 1;
-  // $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-
+  /* Field: User notes: Edit link */
+  // $handler->display->display_options['fields']['status']['id'] = 'status';
+  // $handler->display->display_options['fields']['status']['table'] = 'node';
+  // $handler->display->display_options['fields']['status']['field'] = 'status';
+  // $handler->display->display_options['fields']['status']['value'] = 1;
+  // $handler->display->display_options['fields']['status']['group'] = 1;
+  // $handler->display->display_options['fields']['status']['expose']['operator'] = FALSE;
+  /* Field: Content: Edit link */ 
+  $handler->display->display_options['fields']['edit_note']['id'] = 'edit_note';
+  $handler->display->display_options['fields']['edit_note']['table'] = 'views_entity_user_note';
+  $handler->display->display_options['fields']['edit_note']['field'] = 'edit_node';
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'user-notes';
