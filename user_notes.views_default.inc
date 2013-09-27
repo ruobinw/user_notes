@@ -115,6 +115,13 @@ function user_notes_views_default_views() {
   );
   $export['number_kingdom'] = $view;
 
+
+
+
+
+
+
+
   //user notes view
   $view = new view();
   $view->name = 'user_notes';
@@ -166,6 +173,7 @@ function user_notes_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'user_notes';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  
   /* Field: User notes: Edit link */
   // $handler->display->display_options['fields']['status']['id'] = 'status';
   // $handler->display->display_options['fields']['status']['table'] = 'node';
@@ -173,10 +181,12 @@ function user_notes_views_default_views() {
   // $handler->display->display_options['fields']['status']['value'] = 1;
   // $handler->display->display_options['fields']['status']['group'] = 1;
   // $handler->display->display_options['fields']['status']['expose']['operator'] = FALSE;
+  
   /* Field: Content: Edit link */ 
-  $handler->display->display_options['fields']['edit_note']['id'] = 'edit_note';
-  $handler->display->display_options['fields']['edit_note']['table'] = 'views_entity_user_note';
-  $handler->display->display_options['fields']['edit_note']['field'] = 'edit_node';
+  // $handler->display->display_options['fields']['edit_note']['id'] = 'edit_note';
+  // $handler->display->display_options['fields']['edit_note']['table'] = 'views_entity_user_note';
+  // $handler->display->display_options['fields']['edit_note']['field'] = 'edit_node';
+  
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'user-notes';

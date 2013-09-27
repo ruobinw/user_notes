@@ -11,8 +11,7 @@ files[] = user_notes.views_default.inc
 files[] = user_notes.features.fe_block_settings.inc
 files[] = user_notes.features.inc
 files[] = node.pages.inc
-files[] = views_handler_field_user_notes_link.inc
-files[] = views_handler_field_user_notes_link_edit.inc
+files[] = views_handler_field_user_notes_edit.inc
 
 dependencies[] = blog
 dependencies[] = comment

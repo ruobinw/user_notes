@@ -54,6 +54,16 @@ function user_notes_views_data() {
   $data['user_notes']['ntid'] = array(
     'title' => t('Note ID'),
     'help' => t('Primary keys that references a note.'),
+    'field' => array(
+      'handler' => 'views_handler_field_numeric',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_numeric',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
   );
 
   // Note text field.
@@ -152,15 +162,14 @@ function user_notes_views_data() {
     ),
   );
 
-  // $data['views_entity_user_notes']['table']['group'] = t('Content');
-  //$data['user_notes']['edit_note']['moved to'] = array('views_entity_user_notes', 'edit_note');
-  $data['user_notes']['edit_note'] = array(
-    'field' => array(
-      'title' => t('Edit'),
-      'help' => t('Provide a simple link to edit the content.'),
-      'handler' => 'views_handler_field_node_link_edit',
-    ),
-  );
+  // // User notes edit link.
+  // $data['user_notes']['edit_note'] = array(
+  //   'field' => array(
+  //     'title' => t('Edit'),
+  //     'help' => t('Provide a simple link to edit the content.'),
+  //     'handler' => 'views_handler_field_user_notes_edit',
+  //   ),
+  // );
 
   // $data['node']['delete_node']['moved to'] = array('views_entity_node', 'delete_node');
   // $data['views_entity_node']['delete_node'] = array(
