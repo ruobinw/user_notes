@@ -117,12 +117,6 @@ function user_notes_views_default_views() {
 
 
 
-
-
-
-
-
-  //user notes view
   $view = new view();
   $view->name = 'user_notes';
   $view->description = '';
@@ -135,7 +129,7 @@ function user_notes_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'user notes';
+  $handler->display->display_options['title'] = 'User notes';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -146,20 +140,20 @@ function user_notes_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
-  /* Relationship: Node */
+  /* Relationship: User notes: Node */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
-  $handler->display->display_options['relationships']['nid']['table'] = 'node';
-  $handler->display->display_options['relationships']['nid']['field'] = 'title';
-  $handler->display->display_options['relationships']['nid']['label'] = 'node title';
-  $handler->display->display_options['relationships']['nid']['required'] = TRUE;
+  $handler->display->display_options['relationships']['nid']['table'] = 'user_notes';
+  $handler->display->display_options['relationships']['nid']['field'] = 'nid';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['relationship'] = 'nid';
+  /* Field: User notes: Note ID */
+  $handler->display->display_options['fields']['ntid']['id'] = 'ntid';
+  $handler->display->display_options['fields']['ntid']['table'] = 'user_notes';
+  $handler->display->display_options['fields']['ntid']['field'] = 'ntid';
+  $handler->display->display_options['fields']['ntid']['exclude'] = TRUE;
   /* Field: User notes: Node ID */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'user_notes';
@@ -168,34 +162,57 @@ function user_notes_views_default_views() {
   $handler->display->display_options['fields']['notes']['id'] = 'notes';
   $handler->display->display_options['fields']['notes']['table'] = 'user_notes';
   $handler->display->display_options['fields']['notes']['field'] = 'notes';
-  /* Sort criterion: User notes: Created date */
+  /* Field: User notes: User ID */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'user_notes';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  /* Field: User notes: Created */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'user_notes';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['date_format'] = 'long';
+  /* Field: User notes: Changed */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'user_notes';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'long';
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = 'Edit';
+  $handler->display->display_options['fields']['nothing']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['nothing']['alter']['path'] = 'note/[ntid]/edit_note';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing_1']['id'] = 'nothing_1';
+  $handler->display->display_options['fields']['nothing_1']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing_1']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing_1']['label'] = '';
+  $handler->display->display_options['fields']['nothing_1']['alter']['text'] = 'Delete';
+  $handler->display->display_options['fields']['nothing_1']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['nothing_1']['alter']['path'] = 'note/[ntid]/delete_note';
+  $handler->display->display_options['fields']['nothing_1']['element_label_colon'] = FALSE;
+  /* Sort criterion: User notes: Created */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'user_notes';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  
-  /* Field: User notes: Edit link */
-  // $handler->display->display_options['fields']['status']['id'] = 'status';
-  // $handler->display->display_options['fields']['status']['table'] = 'node';
-  // $handler->display->display_options['fields']['status']['field'] = 'status';
-  // $handler->display->display_options['fields']['status']['value'] = 1;
-  // $handler->display->display_options['fields']['status']['group'] = 1;
-  // $handler->display->display_options['fields']['status']['expose']['operator'] = FALSE;
-  
-  /* Field: Content: Edit link */ 
-  // $handler->display->display_options['fields']['edit_note']['id'] = 'edit_note';
-  // $handler->display->display_options['fields']['edit_note']['table'] = 'views_entity_user_note';
-  // $handler->display->display_options['fields']['edit_note']['field'] = 'edit_node';
-  
+  /* Sort criterion: User notes: Changed */
+  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['table'] = 'user_notes';
+  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
+
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'user-notes';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'user notes';
+  $handler->display->display_options['menu']['title'] = 'User notes';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'main-menu';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
   $export['user_notes'] = $view;
   
   return $export;

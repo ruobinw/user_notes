@@ -179,6 +179,5 @@ function user_notes_views_data() {
   //     'handler' => 'views_handler_field_node_link_delete',
   //   ),
   // );
-  
-  return $data;
+  return theme('views-view--user_notes', $data);
 }
