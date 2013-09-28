@@ -228,6 +228,10 @@ function user_notes_theme() {
       // matches.
       'pattern' => 'user_notes_diff_list__',
     ),
+    'views-view--user_notes' => array(
+      // Use a template and give the template's name.
+      'template' => 'views-view--user-notes',
+    )
   );
 }
 
