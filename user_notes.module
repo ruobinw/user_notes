@@ -235,9 +235,6 @@ function user_notes_theme() {
       // Use a template and give the template's name.
       'template' => 'views-view-field--notes',
     ),
-    'user_notes_edit_form' => array(
-      'template' => 'user-notes-edit-form',
-    ),
   );
 }
 
@@ -314,19 +311,10 @@ function edit_form($form, &$form_state, $loaded_ntid) {
   ->condition('n.ntid', $loaded_ntid, '=')
   ->execute()
   ->fetchField();
-  // $changed_time = db_select('user_notes', 'n')
-  // ->fields('n', array('changed'))
-  // ->condition('n.ntid', $loaded_ntid, '=')
-  // ->execute()
-  // ->fetchField();
   $form['notes'] = array(
     '#type' => 'textfield',
     '#default_value' => $notes,
   );
-  // $form['changed_time'] = array(
-  //   '#type' => 'value',
-  //   '#value' => $changed_time,
-  // );
   $form['loaded_ntid'] = array(
     '#type' => 'value',
     '#default_value' => $loaded_ntid,
@@ -340,26 +328,14 @@ function edit_form($form, &$form_state, $loaded_ntid) {
     ),
     '#value' => t('Save'),
   );
-  //return theme('user_notes_edit_form', $form);
   return $form;
 }
 
-// function edit_form_submit($form, &$form_state) {
-//   $values = $form_state['values'];
-//   $timestamp = REQUEST_TIME;
-//   db_update('user_notes')
-//   ->fields(array(
-//     'notes' => $values['notes'],
-//     'changed' => $timestamp,
-//     )
-//   )
-//   ->condition('ntid', $values['loaded_ntid'], '=')
-//   ->execute();
-// }
-
 function user_notes_submit_callback($form, $form_state) {
   $values = $form_state['values'];
+  // Get the UNIX time for change time of the note
   $timestamp = REQUEST_TIME;
+  // Update the notes and change time
   db_update('user_notes')
   ->fields(array(
     'notes' => $values['notes'],
@@ -368,13 +344,13 @@ function user_notes_submit_callback($form, $form_state) {
   )
   ->condition('ntid', $values['loaded_ntid'], '=')
   ->execute();
-  
+  // Select the updated change time
   $changed_time = db_select('user_notes', 'n')
   ->fields('n', array('changed'))
   ->condition('n.ntid', $values['loaded_ntid'], '=')
   ->execute()
   ->fetchField();
-
+  // Output everything
   $text = $values['notes'];
   $ntid = $values['loaded_ntid'];
   $date = date("l, F j, Y, - H:i", $changed_time);
@@ -382,6 +358,7 @@ function user_notes_submit_callback($form, $form_state) {
   $commands = array();
   $commands[] = ajax_command_replace('#notes' . $ntid, '<div id="notes' . $ntid . '">' . $text . '</div>');
   $commands[] = ajax_command_replace('#changed' . $ntid, '<div id="changed' . $ntid . '">' . $date . '</div>');
+  // Close up the form
   $commands[] = ajax_command_remove('[action="/drupal/ajax_link_callback/ajax/' . $ntid . '"]');
   return array('#type' => 'ajax', '#commands' => $commands);
 }
