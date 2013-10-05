@@ -10,7 +10,7 @@
 function user_notes_views_api($module = NULL, $api = NULL) {
   return array(
     'api'=> '3.0',
-    //'path' => drupal_get_path('module', 'example') . '/includes/views',
+    'path' => drupal_get_path('module', 'user_notes'),
     'template path' => drupal_get_path('module', 'user_notes') . '/themes',
   );
 }

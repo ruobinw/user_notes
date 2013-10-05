@@ -202,7 +202,6 @@ function user_notes_views_default_views() {
   $handler->display->display_options['sorts']['changed']['id'] = 'changed';
   $handler->display->display_options['sorts']['changed']['table'] = 'user_notes';
   $handler->display->display_options['sorts']['changed']['field'] = 'changed';
-
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'user-notes';
