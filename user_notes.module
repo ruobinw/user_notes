@@ -290,11 +290,23 @@ function my_block_view() {
 
 function user_notes_ajax_link_response($type = 'ajax', $ntid) {
   if ($type == 'ajax') {
+    // $formex = $html->find('form[action="/drupal/ajax_link_callback/ajax/' . $ntid . '"]');
+    // static $formflag = FALSE;
     $form = drupal_get_form('edit_form', $ntid);
     $output = drupal_render($form);
     $commands = array();
+    
     // See ajax_example_advanced.inc for more details on the available commands
     // and how to use them.
+    // if (is_object($formex)) {
+    //   $commands[] = ajax_command_remove('[action="/drupal/ajax_link_callback/ajax/' . $ntid . '"]');
+    //   // $formflag = FALSE;
+    // }
+    // else {
+    //   // $formflag = TRUE;
+    //   $commands[] = ajax_command_after('[href="/drupal/ajax_link_callback/nojs/' . $ntid . '"]', $output);
+    // }
+    $commands[] = ajax_command_remove('[action="/drupal/ajax_link_callback/ajax/' . $ntid . '"]');
     $commands[] = ajax_command_after('[href="/drupal/ajax_link_callback/nojs/' . $ntid . '"]', $output);
     $page = array('#type' => 'ajax', '#commands' => $commands);
     ajax_deliver($page);
