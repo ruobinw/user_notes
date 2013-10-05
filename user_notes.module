@@ -31,7 +31,7 @@ function user_notes_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('user_notes_admin_settings_form'),
   );
-  //
+  // Page to add a note to a node
   $items['node/%node/notes'] = array(
     'title' => 'User Notes',
     'type' => MENU_LOCAL_TASK,
@@ -41,7 +41,7 @@ function user_notes_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('user_notes_textfield', 1),
   );
-  //
+  // Page for showing the note list
   $items['user/%user/notes'] = array(
     'title' => 'All My Notes',
     'type' => MENU_LOCAL_TASK,
@@ -51,6 +51,7 @@ function user_notes_menu() {
     'page callback' => 'user_notes_list',
     'page arguments' => array(1),
   );
+  // Note editing page
   $items['note/%/edit_note'] = array(
     'title' => 'Edit Note',
     'type' => MENU_LOCAL_TASK,
@@ -59,6 +60,7 @@ function user_notes_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('edit_note_form', 1),
   );
+  // Note deleting page
   $items['note/%/delete_note'] = array(
     'title' => 'Delete Note',
     'type' => MENU_LOCAL_TASK,
@@ -67,6 +69,7 @@ function user_notes_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('delete_note_form', 1),
   );
+  // Ajax edit link path registry
   $items['ajax_link_callback/%'] = array(
     'title' => 'Edit Note',
     'type' => MENU_CALLBACK,
@@ -87,6 +90,7 @@ function user_notes_admin_settings_form($node, &$form_state) {
   return $form;
 }
 
+// Form to add a note to a node
 function user_notes_textfield($form, &$form_state, $node) {
   global $user;
   $form['notes'] = array(
@@ -126,6 +130,7 @@ function user_notes_textfield_submit($form, &$form_state) {
   ->execute();
 }
 
+// Note list for the login user
 function user_notes_list($loaded_user) {
   $output = "";
   $note = db_select('user_notes', 'n')
@@ -290,22 +295,12 @@ function my_block_view() {
 
 function user_notes_ajax_link_response($type = 'ajax', $ntid) {
   if ($type == 'ajax') {
-    // $formex = $html->find('form[action="/drupal/ajax_link_callback/ajax/' . $ntid . '"]');
-    // static $formflag = FALSE;
     $form = drupal_get_form('edit_form', $ntid);
     $output = drupal_render($form);
     $commands = array();
     
     // See ajax_example_advanced.inc for more details on the available commands
     // and how to use them.
-    // if (is_object($formex)) {
-    //   $commands[] = ajax_command_remove('[action="/drupal/ajax_link_callback/ajax/' . $ntid . '"]');
-    //   // $formflag = FALSE;
-    // }
-    // else {
-    //   // $formflag = TRUE;
-    //   $commands[] = ajax_command_after('[href="/drupal/ajax_link_callback/nojs/' . $ntid . '"]', $output);
-    // }
     $commands[] = ajax_command_remove('[action="/drupal/ajax_link_callback/ajax/' . $ntid . '"]');
     $commands[] = ajax_command_after('[href="/drupal/ajax_link_callback/nojs/' . $ntid . '"]', $output);
     $page = array('#type' => 'ajax', '#commands' => $commands);
